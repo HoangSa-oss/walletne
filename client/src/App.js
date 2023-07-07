@@ -9,16 +9,24 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute";
+import { useSelector } from "react-redux";
+import Loader from "./components/Loader";
+
+
 function App() {
+  const { loading } = useSelector((state) => state.loaders);
+
   return (
     <div>
+      {loading && <Loader />}
        <BrowserRouter>
         <Routes>
           <Route
             path="/login"
             element={
           
-                <Login />
+               <PublicRoute><Login /></PublicRoute> 
      
             }
           />
@@ -26,7 +34,7 @@ function App() {
             path="/register"
             element={
     
-                <Register />
+             <PublicRoute><Register /></PublicRoute>   
    
             }
           />

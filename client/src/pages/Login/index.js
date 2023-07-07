@@ -2,12 +2,20 @@ import React from "react";
 import { Col, Form, message, Row } from "antd";
 import { useNavigate } from "react-router-dom";
 import { LoginUser } from "../../apicalls/users";
+import { HideLoading, ShowLoading } from "../../redux/loadersSlice";
+import { useDispatch } from "react-redux";
 
 function Login() {
   const navigate = useNavigate()
+  const dispatch = useDispatch();
+
   const onFinsish = async (values)=>{
     try {
+      dispatch(ShowLoading());
+
       const response = await LoginUser(values);
+      dispatch(HideLoading());
+
       if (response.success) {
         message.success(response.message);
         localStorage.setItem("token", response.data);
@@ -16,6 +24,8 @@ function Login() {
         message.error(response.message);
       }
     } catch (error) {
+      dispatch(HideLoading());
+
       message.error(error.message);
     }
   }
